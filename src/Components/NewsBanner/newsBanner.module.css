@@ -1,0 +1,18 @@
+.banner {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #090A0A;
+}
+
+.author {
+    font-size: 12px;
+    font-weight: 400;
+    color: #6C7072;
+}
