@@ -1,17 +1,23 @@
 import { useState } from "react";
 import styles from "../Main/main.module.css";
 
-import useGetNews from "../../api/apiNews";
+import { useGetNews } from "../../api/apiNews";
 
 import Skeleton from "../../Components/Skeleton/Skeleton";
 import NewsBanner from "../../Components/NewsBanner/NewsBanner";
 import NewsList from "../../Components/NewsList/NewsList";
 import Pagination from "../../Components/Pagination/Pagination";
+import Categories from "../../Components/Categories/Categories";
 
 const Main = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(10);
-  const { data, loading } = useGetNews(currentPage);
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const { news, loading } = useGetNews({
+    currentPage: currentPage,
+    totalPages: totalPages,
+    selectedCategory: selectedCategory,
+  });
 
   const handleNextPage = () => {
     if (currentPage < totalPages) {
@@ -31,8 +37,13 @@ const Main = () => {
 
   return (
     <main className={styles.main}>
-      {data.length > 0 && !loading ? (
-        <NewsBanner item={data[0]}></NewsBanner>
+      <Categories
+        selectedCategory={selectedCategory}
+        setSelectedCategory={setSelectedCategory}
+      ></Categories>
+
+      {news.length > 0 && !loading ? (
+        <NewsBanner item={news[0]}></NewsBanner>
       ) : (
         <Skeleton count={1} type={"banner"}></Skeleton>
       )}
@@ -45,8 +56,8 @@ const Main = () => {
         handlePageClick={handlePageClick}
       ></Pagination>
 
-      {data.length > 0 && !loading ? (
-        <NewsList news={data}></NewsList>
+      {news.length > 0 && !loading ? (
+        <NewsList news={news}></NewsList>
       ) : (
         <Skeleton count={10} type={"item"}></Skeleton>
       )}
