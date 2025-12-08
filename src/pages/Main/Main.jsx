@@ -2,21 +2,26 @@ import { useState } from "react";
 import styles from "../Main/main.module.css";
 
 import { useGetNews } from "../../api/apiNews";
+import { useDebounce } from "../../helpers/useDebounce";
 
 import Skeleton from "../../Components/Skeleton/Skeleton";
 import NewsBanner from "../../Components/NewsBanner/NewsBanner";
 import NewsList from "../../Components/NewsList/NewsList";
 import Pagination from "../../Components/Pagination/Pagination";
 import Categories from "../../Components/Categories/Categories";
+import Search from "../../Components/Search/Search";
 
 const Main = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(10);
+  const [totalPages] = useState(10);
   const [selectedCategory, setSelectedCategory] = useState("All");
+  const [keywords, setKeywords] = useState("");
+
   const { news, loading } = useGetNews({
     currentPage: currentPage,
     totalPages: totalPages,
     selectedCategory: selectedCategory,
+    keywords: keywords,
   });
 
   const handleNextPage = () => {
@@ -41,6 +46,8 @@ const Main = () => {
         selectedCategory={selectedCategory}
         setSelectedCategory={setSelectedCategory}
       ></Categories>
+
+      <Search keywords={keywords} setKeywords={setKeywords}></Search>
 
       {news.length > 0 && !loading ? (
         <NewsBanner item={news[0]}></NewsBanner>
