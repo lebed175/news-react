@@ -1,10 +1,9 @@
-import { useState } from "react";
 import styles from "../Main/main.module.css";
 
 import { useGetNews } from "../../api/apiNews";
-import { useDebounce } from "../../helpers/useDebounce";
+import { useFilters } from "../../helpers/useFilters";
+import { TOTAL_PAGES, PAGE_SIZE } from "../../constants/constants";
 
-import Skeleton from "../../Components/Skeleton/Skeleton";
 import NewsBanner from "../../Components/NewsBanner/NewsBanner";
 import NewsList from "../../Components/NewsList/NewsList";
 import Pagination from "../../Components/Pagination/Pagination";
@@ -12,66 +11,66 @@ import Categories from "../../Components/Categories/Categories";
 import Search from "../../Components/Search/Search";
 
 const Main = () => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages] = useState(10);
-  const [selectedCategory, setSelectedCategory] = useState("All");
-  const [keywords, setKeywords] = useState("");
+  const { filters, changeFilter } = useFilters({
+    currentPage: 1,
+    selectedCategory: "All",
+    keywords: "",
+    pageSize: PAGE_SIZE,
+    totalPages: TOTAL_PAGES,
+  });
 
-  const { news, loading } = useGetNews({
-    currentPage: currentPage,
-    totalPages: totalPages,
-    selectedCategory: selectedCategory,
-    keywords: keywords,
+  const { news, loading, error } = useGetNews({
+    ...filters,
   });
 
   const handleNextPage = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1);
+    if (filters.currentPage < filters.totalPages) {
+      changeFilter("currentPage", filters.currentPage + 1);
     }
   };
 
   const handlePrevPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
+    if (filters.currentPage > 1) {
+      changeFilter("currentPage", filters.currentPage - 1);
     }
   };
 
   const handlePageClick = (pageNumber) => {
-    setCurrentPage(pageNumber);
+    changeFilter("currentPage", pageNumber);
   };
 
   return (
     <main className={styles.main}>
       <Categories
-        selectedCategory={selectedCategory}
-        setSelectedCategory={setSelectedCategory}
+        selectedCategory={filters.selectedCategory}
+        setSelectedCategory={(category) =>
+          changeFilter("selectedCategory", category)
+        }
       ></Categories>
 
-      <Search keywords={keywords} setKeywords={setKeywords}></Search>
+      <Search
+        keywords={filters.keywords}
+        setKeywords={(keywords) => changeFilter("keywords", keywords)}
+      ></Search>
 
-      {news.length > 0 && !loading ? (
-        <NewsBanner item={news[0]}></NewsBanner>
-      ) : (
-        <Skeleton count={1} type={"banner"}></Skeleton>
-      )}
+      <NewsBanner
+        loading={loading}
+        item={news.length > 0 && news[0]}
+      ></NewsBanner>
 
       <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages}
+        currentPage={filters.currentPage}
+        totalPages={filters.totalPages}
         handleNextPage={handleNextPage}
         handlePrevPage={handlePrevPage}
         handlePageClick={handlePageClick}
       ></Pagination>
 
-      {news.length > 0 && !loading ? (
-        <NewsList news={news}></NewsList>
-      ) : (
-        <Skeleton count={10} type={"item"}></Skeleton>
-      )}
+      <NewsList loading={loading} news={news}></NewsList>
 
       <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages}
+        currentPage={filters.currentPage}
+        totalPages={filters.totalPages}
         handleNextPage={handleNextPage}
         handlePrevPage={handlePrevPage}
         handlePageClick={handlePageClick}
