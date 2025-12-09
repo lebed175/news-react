@@ -1,10 +1,26 @@
 import styles from "../NewsByFilters/newsByFilters.module.css";
 
 import NewsFilters from "../NewsFilters/NewsFilters";
-import Pagination from "../Pagination/Pagination";
 import NewsList from "../NewsList/NewsList";
+import PaginationWrapper from "../PaginationWrapper/PaginationWrapper";
+import { useFilters } from "../../helpers/useFilters";
+import { useGetNews } from "../../api/apiNews";
+import { PAGE_SIZE } from "../../constants/constants";
+import { TOTAL_PAGES } from "../../constants/constants";
 
-const NewsByFilters = ({ filters, changeFilter, loading, news }) => {
+const NewsByFilters = () => {
+  const { filters, changeFilter } = useFilters({
+    currentPage: 1,
+    selectedCategory: "All",
+    keywords: "",
+    pageSize: PAGE_SIZE,
+    totalPages: TOTAL_PAGES,
+  });
+
+  const { news, loading, error } = useGetNews({
+    ...filters,
+  });
+
   const handleNextPage = () => {
     if (filters.currentPage < filters.totalPages) {
       changeFilter("currentPage", filters.currentPage + 1);
@@ -24,24 +40,18 @@ const NewsByFilters = ({ filters, changeFilter, loading, news }) => {
   return (
     <section className={styles.section}>
       <NewsFilters filters={filters} changeFilter={changeFilter}></NewsFilters>
-      
-      <Pagination
+
+      <PaginationWrapper
+        top
+        bottom = {false}
         currentPage={filters.currentPage}
         totalPages={filters.totalPages}
         handleNextPage={handleNextPage}
         handlePrevPage={handlePrevPage}
         handlePageClick={handlePageClick}
-      ></Pagination>
-
-      <NewsList loading={loading} news={news}></NewsList>
-
-      <Pagination
-        currentPage={filters.currentPage}
-        totalPages={filters.totalPages}
-        handleNextPage={handleNextPage}
-        handlePrevPage={handlePrevPage}
-        handlePageClick={handlePageClick}
-      ></Pagination>
+      >
+        <NewsList loading={loading} news={news}></NewsList>
+      </PaginationWrapper>
     </section>
   );
 };
