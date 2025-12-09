@@ -37,3 +37,36 @@ export const useGetNews = ({ currentPage = 1, pageSize = 10, keywords, selectedC
 
     return { news, loading, error }
 }
+
+export const useGetLatestNews = () => {
+    const latestNewsUrl = `https://newsapi.org/v2/top-headlines?country=us&apiKey=${key}`
+
+    const [latestNews, setLatestNews] = useState([])
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState(null)
+
+    const fetchNews = async () => {
+        try {
+            setLoading(true)
+            const response = await fetch(latestNewsUrl)
+
+            if (!response.ok) {
+                setLoading(false)
+                throw new Error('Ошибка с сервером!')
+            }
+
+            const data = await response.json()
+            setLatestNews(data.articles)
+            setLoading(false)
+        } catch (e) {
+            setError(e.message)
+            setLoading(false)
+        }
+    }
+
+    useEffect(() => {
+        fetchNews()
+    }, [])
+
+    return { latestNews, loading, error }
+}
