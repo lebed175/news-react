@@ -1,4 +1,4 @@
-import styles from "../Main/main.module.css";
+import styles from "../Main/styles.module.css";
 
 import LatestNews from "../../Components/LatestNews/LatestNews";
 import NewsByFilters from "../../Components/NewsByFilters/NewsByFilters";

@@ -1,4 +1,4 @@
-import styles from '../Header/header.module.css'
+import styles from '../Header/styles.module.css'
 import formatDate from "../../helpers/formatDate"
 
 const Header = () => {
