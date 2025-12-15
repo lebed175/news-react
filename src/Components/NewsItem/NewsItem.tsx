@@ -1,14 +1,20 @@
-import styles from "../NewsItem/newsItem.module.css";
+import styles from "../NewsItem/styles.module.css";
 
 import { formatTimeAgo } from "../../helpers/formatTimeAgo";
 
-const NewsItem = ({ item }) => {
+import { INews } from "../../interfaces";
+
+interface Props {
+  item: INews;
+}
+
+const NewsItem = ({ item }: Props) => {
   return (
     <li className={styles.item}>
       <div
         className={styles.wrapper}
         style={{
-          backgroundImage: item.urlToImage ? `url(${item.urlToImage})` : {},
+          backgroundImage: item.urlToImage && `url(${item.urlToImage})`,
         }}
       ></div>
 
