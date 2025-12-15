@@ -1,9 +1,15 @@
-import styles from "../BannersList/bannersList.module.css";
+import styles from "../BannersList/styles.module.css";
 import withSkeleton from "../../helpers/hocs/withSkeleton";
 
 import NewsBanner from "../NewsBanner/NewsBanner";
 
-const BannersList = ({ banners }) => {
+import { INews } from "../../interfaces";
+
+interface Props {
+  banners?: INews[];
+}
+
+const BannersList = ({ banners }: Props) => {
   return (
     <ul className={styles.banners}>
       {banners?.map((banner, index) => {
@@ -13,6 +19,11 @@ const BannersList = ({ banners }) => {
   );
 };
 
-const BannerListWithSkeleton = withSkeleton(BannersList, 10, "banner", "row");
+const BannerListWithSkeleton = withSkeleton<Props>(
+  BannersList,
+  10,
+  "banner",
+  "row"
+);
 
 export default BannerListWithSkeleton;

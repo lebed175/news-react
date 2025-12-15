@@ -1,4 +1,4 @@
-import styles from "../NewsByFilters/newsByFilters.module.css";
+import styles from "../NewsByFilters/styles.module.css";
 
 import NewsFilters from "../NewsFilters/NewsFilters";
 import NewsList from "../NewsList/NewsList";
@@ -33,7 +33,7 @@ const NewsByFilters = () => {
     }
   };
 
-  const handlePageClick = (pageNumber) => {
+  const handlePageClick = (pageNumber: number) => {
     changeFilter("currentPage", pageNumber);
   };
 
@@ -43,7 +43,7 @@ const NewsByFilters = () => {
 
       <PaginationWrapper
         top
-        bottom = {false}
+        bottom={false}
         currentPage={filters.currentPage}
         totalPages={filters.totalPages}
         handleNextPage={handleNextPage}

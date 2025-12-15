@@ -1,4 +1,4 @@
-import styles from "../LatestNews/latestNews.module.css";
+import styles from "../LatestNews/styles.module.css";
 import BannersList from "../BannersList/BannersList";
 
 import { useGetLatestNews } from "../../api/apiNews";
