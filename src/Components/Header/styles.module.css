@@ -2,10 +2,20 @@
     display: flex;
     width: 100%;
     padding: 12px 24px;
-    flex-direction: column;
-    gap: 12px;
+    justify-content: space-between;
+    align-items: center;
     background-color: white;
     border-bottom: 1px solid #F2F4F5;
+}
+
+.info {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.image {
+    cursor: pointer;
 }
 
 .title {
@@ -18,4 +28,13 @@
     font-size: 16px;
     font-weight: 400;
     color: #090A0A;
+}
+
+.dark {
+    background-color: #23272f;
+    border-bottom: 1px solid rgb(60, 60, 60);
+}
+
+.light {
+    background-color: white;
 }

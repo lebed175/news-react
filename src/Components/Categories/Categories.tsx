@@ -18,7 +18,6 @@ const Categories = forwardRef(
     return (
       <div ref={ref} className={styles.categories}>
         {categories.map((category, index) => {
-          console.log(categories);
           return (
             <button
               onClick={() => setSelectedCategory(category)}
