@@ -43,7 +43,7 @@ const NewsByFilters = () => {
 
       <PaginationWrapper
         top
-        bottom={false}
+        bottom
         currentPage={filters.currentPage}
         totalPages={filters.totalPages}
         handleNextPage={handleNextPage}
