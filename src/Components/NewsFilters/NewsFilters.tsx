@@ -5,27 +5,32 @@ import Search from "../Search/Search";
 import Slider from "../Slider/Slider";
 
 import { IFilter } from "../../interfaces";
+import { useAppDispatch } from "../../store";
+import { setFilters } from "../../store/slices/newsSlice";
 
 interface Props {
   filters: IFilter;
-  changeFilter: (key: string, value: number | string | null) => void;
 }
 
-const NewsFilters = ({ filters, changeFilter }: Props) => {
+const NewsFilters = ({ filters }: Props) => {
+  const dispatch = useAppDispatch();
+
   return (
     <div className={styles.filters}>
       <Slider>
         <Categories
           selectedCategory={filters.selectedCategory}
           setSelectedCategory={(category) =>
-            changeFilter("selectedCategory", category)
+            dispatch(setFilters({ key: "selectedCategory", value: category }))
           }
         ></Categories>
       </Slider>
 
       <Search
         keywords={filters.keywords}
-        setKeywords={(keywords) => changeFilter("keywords", keywords)}
+        setKeywords={(keywords) =>
+          dispatch(setFilters({ key: "keywords", value: keywords }))
+        }
       ></Search>
     </div>
   );
