@@ -1,10 +1,13 @@
 import styles from "../LatestNews/styles.module.css";
 import BannersList from "../BannersList/BannersList";
-
-import { useGetLatestNews } from "../../api/apiNews";
+import { useGetLatestNewsQuery } from "../../store/services/newsApi";
 
 const LatestNews = () => {
-  const { latestNews, loading, error } = useGetLatestNews();
+  const { data, isLoading: loading } = useGetLatestNewsQuery({
+    country: "us",
+  });
+
+  const latestNews = data?.articles || [];
 
   return (
     <section className={styles.section}>
